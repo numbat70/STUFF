@@ -1,0 +1,332 @@
+input{
+      color: black; 
+      font-weight: bold;
+      border-radius: 5px ;
+}
+
+h2 {
+
+      font-size: 1.5em;
+}
+
+h1{
+margin-bottom:0px;
+margin-top:0px;
+-webkit-margin-after:0px;
+-webkit-margin-before:0px;
+padding-left: 2rem;
+
+}
+
+.starter-template{
+padding-top: 0em;
+/*background-color: lightgrey;*/
+background-color:  #EAEAEA;
+
+
+}
+section.about-business {
+  background-color: white;
+  padding: 0.5em 0;
+  margin-bottom: 1em;
+  border-bottom: none;
+  border-style: none;
+  padding-top: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 2rem;
+  margin-top: 0.3em;
+}
+
+
+section.roundedWhite {
+  background-color: white;
+  padding: 0.5em 0;
+  margin-bottom: 1em;
+  border-bottom: none;
+  border-style: none;
+  padding-top: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 2rem;
+  margin-top: 0.3em;
+  border-radius: 0.5em;
+}
+
+
+.nomargin{
+      margin: 0px;
+      -webkit-margin-after:0px;
+}
+
+
+
+a:visited {
+    color: #4c2c92;
+}
+
+govuk-template-1875638….css:1
+a:link {
+    color: #005ea5;
+}
+
+.greyBack{
+      background-color: #EAEAEA;
+}
+
+
+/*
+.blueBack{
+      background-color: #2980b9;
+}
+*/
+
+.blueBack{
+      background-color: #EAEAEA;
+}
+
+.whiteBack{
+      background-color: white;
+}
+
+
+
+
+.rowCalc{
+      text-align: left;
+      border-width: 1px;
+      border-color: grey;
+      padding-bottom: 0.5em;
+      border-style: groove;
+      padding-top: 0.4em;
+           
+}
+
+.rowCalcFooter{
+      background-color: #eeeeee;
+}
+
+.rowCalcHeader{
+      background-color: #eeeeee;
+}
+
+.rowCalcBlue{
+      background-color: #66ccff;
+}
+
+.rowCalcGreen{
+      background-color: #66ff99;
+}
+.rowWhite{
+      background-color: #ffffff;
+}
+
+.buttonDisplayOnly{
+      background-color: #337ab7;
+      border-color: #000000;
+      color: black; 
+      font-weight: bold;
+      margin: 0;
+      width: 6em;
+      padding-left: 1px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      text-align: left;
+      cursor: none;
+      cursor: not-allowed;
+      border: none;
+      border-radius: 5px ;
+}
+
+.buttonDisplayOnlyWhite{
+      background-color: #ffffff;
+      border-color: #000000;
+      color: black; 
+      font-weight: bold;
+      margin: 0;
+      width: 6em;
+      padding-left: 1px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      text-align: left;
+      cursor: none;
+      cursor: not-allowed;
+      border: none;
+      border-radius: 5px ;
+}
+
+.buttonDisplayOnlyWhiteGreen{
+      background-color: #ffffff;
+      border-color: #000000;
+      color: green; 
+      font-weight: bold;
+      margin: 0;
+      width: 6em;
+      padding-left: 1px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      text-align: left;
+      cursor: none;
+      cursor: not-allowed;
+      border: none;
+            border-radius: 5px ;
+}
+
+.buttonDisplayOnlyWhiteRed{
+      background-color: #ffffff;
+      border-color: #000000;
+      color: red; 
+      font-weight: bold;
+      margin: 0;
+      width: 6em;
+      padding-left: 1px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      text-align: left;
+      cursor: none;
+      cursor: not-allowed;
+      border: none;
+            border-radius: 5px ;
+}
+
+
+.buttonCalc{
+      background-color: #330099;
+      border-color: #cccccc;
+      border: solid;
+      font-color: white;
+      color: white;
+      margin: 0px;
+      width: 6em;
+      padding-left: 0px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      text-align: center;
+      border: all;
+      cursor: pointer;
+      border-radius: 5px ;
+}
+
+.buttonCalc:hover{
+      background-color: green;
+
+ }
+
+ .logoDIT::after{
+      padding: 0px;
+      margin: 0px;
+      /* content: url('../DIT.jpg'); */
+      height:1em;
+      width:1em;
+      display:inline-block;
+      vertical-align: -30%;
+      clear: right;
+ }
+
+ .SEdoesNOT {
+      color:green;
+ }
+
+ .SEshouldNOT  {
+      color: #ff9900;
+ }
+
+ .partnerdoesNOT {
+      color: #ff0066;
+ }
+
+#working{font-size:150px}
+
+.toggle-button {
+  position: relative;
+  display: block;
+  background: white;
+  border: 1px solid;
+  height: 120px;;
+  padding: 1em;
+  color: #666;
+}
+
+.toggle-button:hover,
+.toggle-button:active {
+  text-decoration: none;
+  color: green;
+}
+
+.selected-icon {
+  display: none;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  }
+
+.toggle-button.active-icon .selected-icon {
+  display: block;
+}
+
+.toggle-button.active-icon {
+  text-decoration: none;
+  background: white !important;
+  color: green;
+}
+
+.toggle-location {
+  opacity: 0.2;
+  display: block;
+}
+
+.toggle-location img {
+  filter: grayscale(100%);
+}
+
+.toggle-location:hover,
+.toggle-location.active-location  {
+  opacity: 1;
+}
+
+.toggle-location img:hover,
+.toggle-location.active-location img {
+  filter: grayscale(0%);
+  border: 5px solid green;
+}
+
+
+
+.btn-group .btn.active {
+  background: green !important;
+  color: white !important;
+}
+
+
+.clipChevron{
+ 
+ -webkit-clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);    
+}
+
+.clipChevron2{
+ 
+-webkit-clip-path: polygon(20% 0%, 100% 0, 100% 20%, 100% 80%, 80% 100%, 0 100%, 0% 80%, 0% 20%);
+clip-path: polygon(20% 0%, 100% 0, 100% 20%, 100% 80%, 80% 100%, 0 100%, 0% 80%, 0% 20%); 
+}
+
+.clipChevron3{
+ 
+-webkit-clip-path: polygon(8% 0, 100% 0, 100% 10%, 100% 90%, 90% 100%, 0 100%, 0% 90%, 0 10%);
+clip-path: polygon(8% 0, 100% 0, 100% 20%, 100% 90%, 90% 100%, 0 100%, 0% 90%, 0 9%);
+}
+
+
+.clipChevron4{
+
+-webkit-clip-path: polygon(8% 0, 100% 0, 100% 20%, 100% 100%, 92% 100%, 0 100%, 0% 80%, 0 9%);
+clip-path: polygon(8% 0, 100% 0, 100% 20%, 100% 100%, 92% 100%, 0 100%, 0% 80%, 0 9%);
+
+}
+
+
+.clipChevron5{
+
+-webkit-clip-path: polygon(95% 0, 100% 50%, 95% 100%, 0% 100%, 5% 50%, 0% 0%);
+clip-path: polygon(95% 0, 100% 50%, 95% 100%, 0% 100%, 5% 50%, 0% 0%);
+}
