@@ -1,2 +1,2 @@
 # STUFF
-sTUFF
+Stuff
