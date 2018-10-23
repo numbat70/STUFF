@@ -5,7 +5,9 @@ $("#buttonCalc").click(function() {
 
 // minmin
 // min
-//    $("#minmin").val(varminmin);
+var varminmin = "lots less"
+
+var varsuccess = $("#minmin").val(varminmin);
 
 // plus
 
