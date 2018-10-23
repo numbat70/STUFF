@@ -10,7 +10,7 @@ var varminmin = "lots less"
 var varsuccess = $("#minmin").val(varminmin);
 
 // plus
-
+ 
 // plusplus
 
 // alert(VOG);
