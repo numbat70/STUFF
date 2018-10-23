@@ -29,36 +29,33 @@
 
     <!--Header-->
     <div class="row rowCalc rowCalcHeader">
-      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"><strong>What it is</strong></div>
-      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2"><strong></strong></div>
-      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2"><strong>Value</strong></div>
-      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2"><strong>Notes</strong></div>
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"><strong>What it is</strong></div>
+
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><strong>Value</strong></div>
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><strong>Notes</strong></div>
     </div>
 
     <!--Value Of Goods-->
     <div class="row rowCalc">
-      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">Name</div>
-      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2"></div>
-      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2"><input style="width: 6em" type="number" value="0" name="VOG" id="VOG" class="" onfocus="if(this.value=='0')this.value='';" onblur="if(this.value=='')this.value='0';" />   </div>
-      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">No <br />(<strong>Rude Words?</strong>)   </div>
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">Name</div>
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><input style="width: 6em" type="number" value="0" name="VOG" id="VOG" class="" onfocus="if(this.value=='0')this.value='';" onblur="if(this.value=='')this.value='0';" />   </div>
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">No <br />(<strong>Rude Words?</strong>)   </div>
     </div>
 
     <!-- calculate costs  -->
     <div class="row rowCalc rowCalcFooter">
-      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">* last char or last two chars will be altered </div>
-      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2"></div>
-      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2"><div class="buttonCalc" id="buttonCalc">Calculate  </div>
-      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2"></div>
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">* last char or last two chars will be altered </div>
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><div class="buttonCalc" id="buttonCalc">Calculate</div>
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"></div>
     </div>
 
 </div>
 
     <!--  SPACER  -->
           <div class="row ">
-            <div class="col-xs-3 col-sm-6 col-md-6 col-lg-6"><h3></h3></div>
-            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id=""></div>
-            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id=""></div>
-            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id=""></div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"><h3></h3></div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" id=""></div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" id=""></div>
           </div>
 
     <!--  SPACER  -->
@@ -89,17 +86,17 @@
             <div class="col-xs-3 col-sm-6 col-md-6 col-lg-6" id="FOBlabel"><strong>Name - </strong></div>
 
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id=""> <strong>
-                     <input style="width: 6em"  type="button" value="0" name="" id="FOB2" class="buttonDisplayOnlyWhite" readonly="readonly" step="0.01"/></strong>
+                     <input style="width: 6em"  type="button" value="0" name="" id="FOB2" class="buttonDisplayOnlyWhite" readonly="readonly" /></strong>
             </div>
+
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="">
-                <input style="width: 6em"  type="button" value="0" name="" id="FOBplus" class="buttonDisplayOnlyWhiteRed" readonly="readonly" step="0.01"/>
+                <input style="width: 6em"  type="button" value="0" name="" id="FOBplus" class="buttonDisplayOnlyWhiteRed" readonly="readonly" />
             </div>
           </div>
 
     <!-- CIF  -->
           <div class="row rowCalc">
             <div class="col-xs-3 col-sm-6 col-md-6 col-lg-6" id="CIFlabel"><strong>Name +</strong></div>
-
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id=""><strong>
               <input style="width: 6em"  type="button" value="0" name="" id="CIF2" class="buttonDisplayOnlyWhite" readonly="readonly" step="0.01"/></strong>
             </div>
@@ -111,7 +108,6 @@
     <!-- DDP  -->
           <div class="row rowCalc">
             <div class="col-xs-3 col-sm-6 col-md-6 col-lg-6" id="DDPlabel"><strong>Name ++</strong></div>
-
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id=""><strong>
                         <input style="width: 6em"  type="button" value="0" name="" id="DDP2" class="buttonDisplayOnlyWhite" readonly="readonly" step="0.01"/> </strong>
 
@@ -124,11 +120,10 @@
     <!--  SPACER  -->
           <div class="row ">
             <div class="col-xs-3 col-sm-6 col-md-6 col-lg-6"><h3></h3></div>
-
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id=""></div>
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id=""></div>
           </div>
-          
+
 
 </div>
 
