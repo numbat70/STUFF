@@ -26,8 +26,6 @@ $("#plusplus").val(VARPLUSPLUS);
 $("#plusplus").val(VARRAW);
 
 
-
-
 // plus
 
 // plusplus
