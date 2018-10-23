@@ -3,7 +3,6 @@ $("#buttonCalc").click(function() {
   alert("Start");
 
 // minmin
-
 // min
 //    $("#minmin").val(varminmin);
 
