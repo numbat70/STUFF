@@ -11,7 +11,6 @@ $("#buttonCalc").click(function() {
 
 //plusplus
 
-
 //alert(VOG);
 //alert(VOG);
 //alert(VOG);
