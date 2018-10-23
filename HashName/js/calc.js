@@ -1,6 +1,6 @@
 $("#buttonCalc").click(function() {
 var VARRAW = $("#varRAW").val();
-  //alert("Start 3");
+alert("Start 4");
 
 // minmin
 // min
