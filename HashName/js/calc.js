@@ -1,16 +1,19 @@
 $("#buttonCalc").click(function() {
 
+  alert("Start");
+
 
 //minmin
 	var varminmin =  ;
+  var varminmin = "Mooooo" ;
+
 //min
-    var varminmin = "Mooooo" ;
     //FOB = parseInt(FOB);
 	//FOB = FOB.toLocaleString();
 //    $("#minmin").val(varminmin);
 
 //plus
-alert($(#varRAW).val());
+//alert($(#varRAW).val());
 //  var TC=parseInt($("#TC").val());
 
 //plusplus
