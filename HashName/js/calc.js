@@ -13,7 +13,6 @@ $("#buttonCalc").click(function() {
 alert($(#varRAW).val());
 //  var TC=parseInt($("#TC").val());
 
-
 //plusplus
 
 
