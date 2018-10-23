@@ -2,7 +2,6 @@ $("#buttonCalc").click(function() {
 var VARRAW = $("#varRAW").val();
   //alert("Start 3");
 
-
 // minmin
 // min
 var VARMINMIN = "MINMIN"
@@ -14,6 +13,7 @@ $("#minmin").val(VARMINMIN);
 $("#min").val(VARMIN);
 $("#plus").val(VARPLUS);
 $("#plusplus").val(VARPLUSPLUS);
+
 $("#plusplus").val(VARRAW);
 
 
