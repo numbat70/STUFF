@@ -10,7 +10,7 @@ var VARPLUS = "PLUS"
 var VARPLUSPLUS = "PLUSPLUS"
 
 var varRAWlast = "xxx"
-var varRAWpenultimate "zzz"
+var varRAWpenultimate = "zzz"
 
 
 alert(varRAWlast);
