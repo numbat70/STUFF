@@ -7,7 +7,6 @@ $("#buttonCalc").click(function() {
 //    $("#minmin").val(varminmin);
 
 // plus
-
 // plusplus
 
 // alert(VOG);
