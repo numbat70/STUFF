@@ -1,6 +1,6 @@
 $("#buttonCalc").click(function() {
 
-  alert("Start 2");
+  alert("Start 2b");
 
 
 // minmin
