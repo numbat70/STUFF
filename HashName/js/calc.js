@@ -7,10 +7,10 @@ $("#buttonCalc").click(function() {
 // min
 var varminmin = "lots less"
 
-var varsuccess = $("#minmin").val(varminmin);
+$("#buttonCalc").val(varminmin);
 
 // plus
- 
+
 // plusplus
 
 // alert(VOG);
