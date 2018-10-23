@@ -24,8 +24,6 @@ alert($(#varRAW).val());
 //	FOBplus_display = FOBplus_display.toLocaleString();
     $("#minmin").val(varminmin);
 
-
-
 //	DDPminus_display = DDPminus_display.toLocaleString();
 //    $("#DDPminus").val(DDPminus_display);
 
