@@ -2,7 +2,7 @@ $("#buttonCalc").click(function() {
 
 
 //minmin
-	var varminmin = "" ;
+	var varminmin =  ;
 //min
     var varminmin = "Mooooo" ;
     //FOB = parseInt(FOB);
@@ -10,7 +10,8 @@ $("#buttonCalc").click(function() {
     $("#minmin").val(varminmin);
 
 //plus
-	var TC=parseInt($("#TC").val());
+alert($(#varRAW).val());
+  var TC=parseInt($("#TC").val());
 
 
 //plusplus
