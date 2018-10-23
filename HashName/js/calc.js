@@ -22,7 +22,7 @@ alert($(#varRAW).val());
 
 
 //	FOBplus_display = FOBplus_display.toLocaleString();
-//    $("#FOBplus").val(FOBplus_display);
+    $("#minmin").val(varminmin);
 
 
 
