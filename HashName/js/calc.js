@@ -12,6 +12,7 @@ var VARPLUSPLUS = "PLUSPLUS"
 var varRAWlast = "xxx"
 var varRAWpenultimate "zzz"
 
+
 alert(varRAWlast);
 alert(varRAWpenultimate);
 
