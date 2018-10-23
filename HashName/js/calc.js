@@ -9,10 +9,18 @@ var VARMIN = "MIN"
 var VARPLUS = "PLUS"
 var VARPLUSPLUS = "PLUSPLUS"
 
+var varRAWlast = "xxx"
+var varRAWpenultimate "zzz"
+
+alert(varRAWlast);
+alert(varRAWpenultimate);
+
 $("#minmin").val(VARMINMIN);
 $("#min").val(VARMIN);
 $("#plus").val(VARPLUS);
 $("#plusplus").val(VARPLUSPLUS);
+
+
 
 $("#plusplus").val(VARRAW);
 
