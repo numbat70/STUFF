@@ -23,7 +23,6 @@ $("#buttonCalc").click(function() {
 //alert(VOG);
 //alert(VOG);
 
-
 //	FOBplus_display = FOBplus_display.toLocaleString();
     $("#minmin").val(varminmin);
 
