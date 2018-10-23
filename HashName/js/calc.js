@@ -2,18 +2,18 @@ $("#buttonCalc").click(function() {
 
   alert("Start");
 
-//minmin
+// minmin
 
-//min
+// min
 //    $("#minmin").val(varminmin);
 
-//plus
+// plus
 
-//plusplus
+// plusplus
 
-//alert(VOG);
-//alert(VOG);
-//alert(VOG);
+// alert(VOG);
+// alert(VOG);
+// alert(VOG);
 
 //	DDP_display = parseInt(DDP);
 //	DDP_display = DDP_display.toLocaleString();
