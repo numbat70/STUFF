@@ -13,7 +13,8 @@ var VARPLUSPLUS = "PLUSPLUS"
 $("#minmin").val(VARMINMIN);
 $("#minmin").val(VARMIN);
 $("#minmin").val(VARPLUS);
-$("#minmin").val(VARPLUSPLUS);
+$("#minmin").val(VARPLUSPLUS);S
+
 
 
 // plus
