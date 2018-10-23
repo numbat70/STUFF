@@ -4,8 +4,6 @@ $("#buttonCalc").click(function() {
 
 
 //minmin
-	var varminmin =  ;
-  var varminmin = "Mooooo" ;
 
 //min
     //FOB = parseInt(FOB);
@@ -24,7 +22,7 @@ $("#buttonCalc").click(function() {
 //alert(VOG);
 
 //	FOBplus_display = FOBplus_display.toLocaleString();
-    $("#minmin").val(varminmin);
+//    $("#minmin").val(varminmin);
 
 //	DDPminus_display = DDPminus_display.toLocaleString();
 //    $("#DDPminus").val(DDPminus_display);
