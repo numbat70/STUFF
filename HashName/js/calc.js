@@ -33,7 +33,6 @@ var VARless2 = VARRAW.substring(0, VARRAW.length-2);
 //alert(VARless2);
 
 //alert(VARRAW.substring(VARRAW.length-1,VARRAW.length));
-
 //Create stub of string with last one char missing
 var VARless1 = VARRAW.substring(0,VARRAW.length-1);
 //alert(VARless1);
