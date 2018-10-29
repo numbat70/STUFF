@@ -29,7 +29,7 @@ alert('creating query');
         'https://docs.google.com/spreadsheets/d/1cf6Mv6vEtlBDLN5u0tD_PfeOIbYaD45qFSC00qxm2TA/edit#gid=0');
 alert('setting query');
     // Apply query language statement.
-    query.setQuery('SELECT 1,2,3,4 ORDER BY 1');
+    query.setQuery('SELECT A,B,C,D ORDER BY A');
 alert('sending query');
     // Send the query with a callback function.
     query.send(handleQueryResponse);
