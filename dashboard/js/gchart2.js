@@ -23,17 +23,6 @@
 ///////
 //https://docs.google.com/spreadsheets/d/1cf6Mv6vEtlBDLN5u0tD_PfeOIbYaD45qFSC00qxm2TA/edit#gid=0
 
-
-
-
-
-
-
-
-
-
-
-
 var query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1cf6Mv6vEtlBDLN5u0tD_PfeOIbYaD45qFSC00qxm2TA/edit?usp=sharing');
 query.send(handleSampleDataQueryResponse);
 dataTable = response.getDataTable();
