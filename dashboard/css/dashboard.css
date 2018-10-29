@@ -1,0 +1,45 @@
+h1 {
+  padding-left: 1em;
+}
+
+h2 {
+    padding-left: 1em;
+}
+
+
+.row{
+padding-left: 0em;
+background-color: red;
+max-width: 100%;
+
+}
+
+.dashboardRow{
+              background-color: teal;
+}
+
+.dashboardBox{
+              background-color: white;
+              align-content: center;
+              text-align: center;
+
+}
+
+.dashboardBoxTitle{
+font-size: 2em;
+font-weight: bold;
+color: silver;
+padding-bottom: 1em;
+padding-top: 1em;
+}
+
+.dashboardBoxValue{
+  font-size: 5em;
+  font-weight: bold;
+  color: black;
+  padding-bottom: 2em;
+}
+
+.rowSpacer{
+
+}
