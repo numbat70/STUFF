@@ -52,11 +52,6 @@ var options = {
     visualization.draw(data, options);
   }
 
-
-
-
-
-
 //////////
 
 
