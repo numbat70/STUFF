@@ -23,13 +23,40 @@
 ///////
 //https://docs.google.com/spreadsheets/d/1cf6Mv6vEtlBDLN5u0tD_PfeOIbYaD45qFSC00qxm2TA/edit#gid=0
 
-var query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1cf6Mv6vEtlBDLN5u0tD_PfeOIbYaD45qFSC00qxm2TA/edit?usp=sharing');
-query.send(handleSampleDataQueryResponse);
-dataTable = response.getDataTable();
+//////////
+    var query = new google.visualization.Query(
+        'https://docs.google.com/spreadsheets/d/1cf6Mv6vEtlBDLN5u0tD_PfeOIbYaD45qFSC00qxm2TA/edit#gid=0');
+
+    // Apply query language statement.
+    query.setQuery('SELECT ALL');
+
+    // Send the query with a callback function.
+    query.send(handleQueryResponse);
+
+
+  function handleQueryResponse(response) {
+    if (response.isError()) {
+      alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+      return;
+    }
+
+    var data = response.getDataTable();
+    visualization = new google.visualization.LineChart(document.getElementById('timeline'));
+    visualization.draw(data, {legend: 'bottom'});
+  }
 
 
 
-//    var options = {
-//    };
- chart.draw(dataTable, options);
+
+
+
+//////////
+
+
+    var options = {
+        timeline: { colorByRowLabel: true }
+    };
+
+
+    chart.draw(dataTable, options);
 }
