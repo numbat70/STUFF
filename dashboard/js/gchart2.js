@@ -26,7 +26,7 @@
 //////////
 alert('creating query');
     var query = new google.visualization.Query(
-        'https://docs.google.com/spreadsheets/d/1cf6Mv6vEtlBDLN5u0tD_PfeOIbYaD45qFSC00qxm2TA/edit#gid=0');
+        'https://docs.google.com/spreadsheets/d/1cf6Mv6vEtlBDLN5u0tD_PfeOIbYaD45qFSC00qxm2TA/edit?usp=sharing');
 alert('setting query');
     // Apply query language statement.
     query.setQuery('SELECT *');
