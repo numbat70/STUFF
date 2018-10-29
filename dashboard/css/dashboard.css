@@ -8,12 +8,10 @@ h2 {
     padding-left: 1em;
 }
 
-
 .row{
 padding-left: 0em;
 background-color: white;
 max-width: 100%;
-
 }
 
 .dashboardRow{
@@ -24,22 +22,19 @@ max-width: 100%;
               background-color: white;
               align-content: center;
               text-align: center;
-
 }
-
 
 .dashboardsubnote{
   font-size: 1.2em;
   color: grey;
 }
 
-
 .dashboardBoxTitle{
 font-size: 1.8em;
 font-weight: bold;
 color: darkblue;
-padding-bottom: 0.5em;
-padding-top: 0.5em;
+padding-bottom: 0.3em;
+padding-top: 0.1em;
 }
 
 .dashboardBoxValue{
