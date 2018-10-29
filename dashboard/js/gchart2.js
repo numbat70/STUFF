@@ -24,12 +24,13 @@
 //https://docs.google.com/spreadsheets/d/1cf6Mv6vEtlBDLN5u0tD_PfeOIbYaD45qFSC00qxm2TA/edit#gid=0
 
 //////////
+alert('creating query');
     var query = new google.visualization.Query(
         'https://docs.google.com/spreadsheets/d/1cf6Mv6vEtlBDLN5u0tD_PfeOIbYaD45qFSC00qxm2TA/edit#gid=0');
-
+alert('setting query');
     // Apply query language statement.
     query.setQuery('SELECT ALL');
-
+alert('sending query');
     // Send the query with a callback function.
     query.send(handleQueryResponse);
 
@@ -40,6 +41,7 @@
       return;
     }
 
+    alert('getting table');
     var data = response.getDataTable();
     visualization = new google.visualization.LineChart(document.getElementById('timeline'));
     visualization.draw(data, {legend: 'bottom'});
