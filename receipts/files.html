@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Directory Listing</title>
+  <style>
+    :root { --gap: 12px; --radius: 12px; }
+    * { box-sizing: border-box; }
+    body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; margin: 0; background: #0b1020; color: #e9eef8; }
+    header { position: sticky; top: 0; backdrop-filter: blur(8px); background: rgba(11,16,32,.7); border-bottom: 1px solid rgba(255,255,255,.08); }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 18px; }
+    h1 { font-size: 20px; margin: 0; font-weight: 700; letter-spacing: .2px; }
+    .card { background: #121831; border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding: 16px; }
+    .row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: var(--gap); padding: 10px 12px; border-radius: 10px; }
+    .row:hover { background: rgba(255,255,255,.04); }
+    .name { display: flex; gap: 10px; align-items: center; min-width: 0; }
+    .name a { color: inherit; text-decoration: none; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .tags { display: flex; gap: 8px; align-items: center; }
+    .tag { font-size: 12px; border: 1px solid rgba(255,255,255,.12); padding: 4px 8px; border-radius: 999px; opacity: .9; }
+    .muted { color: #aab3c5; font-weight: 500; }
+    .controls { display: flex; gap: 8px; }
+    button, .btn { appearance: none; border: 1px solid rgba(255,255,255,.12); background: #0f152b; color: #e9eef8; padding: 8px 12px; border-radius: 10px; cursor: pointer; font-weight: 600; text-decoration: none; }
+    button:hover, .btn:hover { background: #101737; }
+    .crumbs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 10px; }
+    .crumbs a { color: #b4c5ff; text-decoration: none; font-weight: 600; }
+    .crumbs .sep { opacity: .5; }
+    .empty { padding: 24px 12px; color: #9aa6bf; }
+    footer { color: #9aa6bf; text-align: center; padding: 18px; font-size: 13px; opacity: .9; }
+    /* Icons */
+    .icon { width: 18px; height: 18px; display: inline-block; }
+    .icon-folder { background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23b9d2ff"><path d="M10 4l2 2h8a2 2 0 012 2v9a3 3 0 01-3 3H5a3 3 0 01-3-3V7a3 3 0 013-3h5z"/></svg>') center/contain no-repeat; }
+    .icon-file { background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23d6e3ff"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zM13 9V3.5L18.5 9H13z"/></svg>') center/contain no-repeat; }
+    .search { width: 100%; margin: 12px 0 4px; display: flex; gap: 8px; }
+    .search input { flex: 1; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,.12); background: #0f152b; color: #e9eef8; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Directory Listing</h1>
+      <div class="crumbs" id="breadcrumbs"></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="card">
+      <div class="search">
+        <input id="filter" type="search" placeholder="Filter items… (Ctrl/⌘+K)" aria-label="Filter items" />
+        <a id="up" class="btn" href="#">Up</a>
+      </div>
+      <div id="list"></div>
+      <div id="empty" class="empty" hidden>No items found in this folder.</div>
+    </div>
+  </main>
+
+  <footer>
+    Powered by the GitHub Contents API. Unauthenticated requests are rate limited.
+  </footer>
+
+  <script>
+    // ======== CONFIG ========
+    // If this page lives in the *same repo* as your files, set OWNER/REPO/BRANCH accordingly and leave BASE_PATH empty.
+    // Optional: If your GitHub Pages site is at https://<user>.github.io/<repo>, set BASE_PATH to '/<repo>/'
+    const OWNER = 'your-github-username';   // e.g. 'octocat'
+    const REPO  = 'your-repo';              // e.g. 'hello-world'
+    const BRANCH = 'main';                  // default branch used by Pages
+    const BASE_PATH = document.baseURI.includes('.github.io/') ? new URL(document.baseURI).pathname.replace(/index\.html$/, '') : '/';
+
+    // ======== RUNTIME ========
+    const listEl = document.getElementById('list');
+    const emptyEl = document.getElementById('empty');
+    const crumbsEl = document.getElementById('breadcrumbs');
+    const upEl = document.getElementById('up');
+    const filterEl = document.getElementById('filter');
+
+    const qs = new URLSearchParams(location.search);
+    const initialPath = decodeURIComponent(qs.get('path') || '').replace(/^\/+|\/+$/g, '');
+
+    // Keyboard focus for filter
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault(); filterEl.focus(); filterEl.select();
+      }
+    });
+
+    async function ghList(path = '') {
+      const url = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(path)}` + (BRANCH ? `?ref=${encodeURIComponent(BRANCH)}` : '');
+      const res = await fetch(url, { headers: { 'Accept': 'application/vnd.github+json' }});
+      if (res.status === 404) return [];
+      if (!res.ok) throw new Error(`GitHub API error ${res.status}`);
+      const data = await res.json();
+      return Array.isArray(data) ? data : [];
+    }
+
+    function makeBreadcrumbs(path = '') {
+      crumbsEl.innerHTML = '';
+      const segments = path ? path.split('/') : [];
+      const rootLink = document.createElement('a');
+      rootLink.href = location.pathname + '?';
+      rootLink.textContent = REPO;
+      crumbsEl.appendChild(rootLink);
+      let acc = '';
+      segments.forEach((seg, i) => {
+        const sep = document.createElement('span'); sep.className = 'sep'; sep.textContent = ' / ';
+        crumbsEl.appendChild(sep);
+        acc += (acc ? '/' : '') + seg;
+        const a = document.createElement('a'); a.href = `?path=${encodeURIComponent(acc)}`; a.textContent = seg;
+        crumbsEl.appendChild(a);
+      });
+    }
+
+    function parentPath(path) {
+      const parts = path.split('/').filter(Boolean); parts.pop(); return parts.join('/');
+    }
+
+    function render(items, currentPath) {
+      // Sort: folders first, then files (alpha)
+      items.sort((a, b) => (a.type === b.type ? a.name.localeCompare(b.name) : a.type === 'dir' ? -1 : 1));
+
+      listEl.innerHTML = '';
+      let shown = 0;
+      const term = filterEl.value.trim().toLowerCase();
+
+      for (const item of items) {
+        if (term && !item.name.toLowerCase().includes(term)) continue;
+        shown++;
+
+        const row = document.createElement('div'); row.className = 'row';
+        const left = document.createElement('div'); left.className = 'name';
+        const icon = document.createElement('span'); icon.className = 'icon ' + (item.type === 'dir' ? 'icon-folder' : 'icon-file');
+        const link = document.createElement('a');
+
+        if (item.type === 'dir') {
+          link.href = `?path=${encodeURIComponent(item.path)}`;
+          link.textContent = item.name + '/';
+        } else {
+          // Prefer linking to the file as served by Pages if possible (relative link),
+          // otherwise fall back to GitHub raw URL.
+          const relative = (BASE_PATH.endsWith('/') ? BASE_PATH : (BASE_PATH + '/')) + item.path;
+          link.href = relative;
+          link.textContent = item.name;
+          link.rel = 'noopener';
+        }
+
+        left.appendChild(icon); left.appendChild(link);
+        row.appendChild(left);
+
+        const right = document.createElement('div'); right.className = 'tags';
+        const tag = document.createElement('span'); tag.className = 'tag muted'; tag.textContent = item.type === 'dir' ? 'folder' : (item.size != null ? humanSize(item.size) : 'file');
+        right.appendChild(tag);
+
+        if (item.type === 'file' && item.download_url) {
+          const dl = document.createElement('a'); dl.className = 'btn'; dl.href = item.download_url; dl.textContent = 'Raw'; dl.download = item.name;
+          right.appendChild(dl);
+        }
+
+        row.appendChild(right);
+        listEl.appendChild(row);
+      }
+
+      emptyEl.hidden = shown !== 0;
+    }
+
+    function humanSize(bytes) {
+      const thresh = 1024; if (Math.abs(bytes) < thresh) return bytes + ' B';
+      const units = ['KB','MB','GB','TB']; let u = -1; do { bytes /= thresh; ++u; } while (Math.abs(bytes) >= thresh && u < units.length - 1);
+      return bytes.toFixed(1) + ' ' + units[u];
+    }
+
+    async function load(path = '') {
+      makeBreadcrumbs(path);
+      const p = parentPath(path);
+      upEl.href = p ? `?path=${encodeURIComponent(p)}` : location.pathname + '?';
+      try {
+        const items = await ghList(path);
+        render(items, path);
+      } catch (err) {
+        listEl.innerHTML = `<div class="empty">⚠️ ${err.message}. You may have hit the unauthenticated rate limit. Try again later.</div>`;
+        emptyEl.hidden = true;
+      }
+    }
+
+    filterEl.addEventListener('input', () => load(currentPath));
+
+    let currentPath = initialPath;
+    load(currentPath);
+  </script>
+</body>
+</html>
