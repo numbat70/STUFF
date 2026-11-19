@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Markdown Editor</title>
+<style>
+:root{--bg:#eef1f4;--panel:#fff;--ink:#1c2530;--mute:#6a7684;--line:#d5dbe2;--accent:#2f5d9e;--accent-ink:#fff;--code:#eef1f5;--warn:#b4531a;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#12171d;--panel:#181e26;--ink:#dde3ea;--mute:#8b97a5;--line:#2b3440;--accent:#7fa8e0;--accent-ink:#0f1620;--code:#222b36;--warn:#e59a62;color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;display:flex;flex-direction:column}
+header{display:flex;align-items:center;gap:.6rem;padding:.6rem .9rem;border-bottom:1px solid var(--line);background:var(--panel);flex-wrap:wrap}
+.name{font-weight:600;margin-right:auto;display:flex;align-items:center;gap:.5rem;min-width:0}
+.name span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dot{width:.55rem;height:.55rem;border-radius:50%;background:var(--warn);visibility:hidden;flex:none}
+.dirty .dot{visibility:visible}
+button{font:inherit;padding:.4rem .85rem;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink);cursor:pointer}
+button:hover{border-color:var(--accent)}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+button:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{flex:1;display:grid;grid-template-columns:1fr 1fr;min-height:0}
+.pane{display:flex;flex-direction:column;min-height:0;min-width:0}
+.pane+.pane{border-left:1px solid var(--line)}
+.label{padding:.35rem .9rem;font-size:13px;color:var(--mute);border-bottom:1px solid var(--line);background:var(--panel)}
+textarea{flex:1;width:100%;resize:none;border:0;padding:1rem;background:var(--panel);color:var(--ink);font:14px/1.6 ui-monospace,"SF Mono",Menlo,Consolas,monospace;tab-size:2}
+#preview{flex:1;overflow:auto;padding:1rem 1.5rem 3rem;background:var(--panel);font:16px/1.7 Charter,"Iowan Old Style",Georgia,serif}
+#preview>*{max-width:70ch}
+#preview h1,#preview h2,#preview h3,#preview h4{font-family:system-ui,sans-serif;line-height:1.25;margin:1.4em 0 .5em}
+#preview h1{font-size:1.9em;border-bottom:1px solid var(--line);padding-bottom:.25em}
+#preview h2{font-size:1.45em}#preview h3{font-size:1.2em}#preview h4,#preview h5,#preview h6{font-size:1em}
+#preview>:first-child{margin-top:0}
+#preview a{color:var(--accent)}
+#preview code{background:var(--code);padding:.1em .35em;border-radius:4px;font:.88em ui-monospace,Menlo,Consolas,monospace}
+#preview pre{background:var(--code);padding:.9rem 1rem;border-radius:6px;overflow:auto}
+#preview pre code{background:none;padding:0}
+#preview blockquote{margin:1em 0;padding:.1em 1rem;border-left:3px solid var(--accent);color:var(--mute)}
+#preview img{max-width:100%}
+#preview hr{border:0;border-top:1px solid var(--line);margin:1.5em 0}
+#preview table{border-collapse:collapse;display:block;overflow:auto}
+#preview th,#preview td{border:1px solid var(--line);padding:.35rem .7rem}
+#preview th{background:var(--code)}
+#preview li input{margin-right:.4em}
+footer{padding:.3rem .9rem;font-size:13px;color:var(--mute);border-top:1px solid var(--line);background:var(--panel);display:flex;justify-content:space-between;gap:1rem}
+#drop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:color-mix(in srgb,var(--accent) 85%,transparent);color:var(--accent-ink);font-size:1.5rem;font-weight:600;z-index:9;pointer-events:none}
+body.dragging #drop{display:flex}
+dialog{border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);padding:1.25rem;max-width:26rem}
+dialog::backdrop{background:rgba(0,0,0,.4)}
+dialog h2{margin:0 0 .5rem;font-size:1.1rem}
+dialog p{margin:0 0 1rem;color:var(--mute)}
+.row{display:flex;gap:.5rem;justify-content:flex-end;flex-wrap:wrap}
+@media (max-width:760px){main{grid-template-columns:1fr;grid-template-rows:1fr 1fr}.pane+.pane{border-left:0;border-top:1px solid var(--line)}}
+</style>
+</head>
+<body>
+<header>
+  <div class="name"><i class="dot" id="dot"></i><span id="fname">Untitled.md</span></div>
+  <button id="open">Open…</button>
+  <button id="saveas">Save as…</button>
+  <button id="save" class="primary">Save</button>
+</header>
+<main>
+  <section class="pane"><div class="label">Markdown</div><textarea id="ed" spellcheck="false" aria-label="Markdown editor"></textarea></section>
+  <section class="pane"><div class="label">Preview</div><div id="preview" aria-live="polite"></div></section>
+</main>
+<footer><span id="status">Drop a .md file anywhere to open it.</span><span id="count"></span></footer>
+<div id="drop">Drop to open markdown file</div>
+<input type="file" id="picker" accept=".md,.markdown,.txt,text/markdown,text/plain" hidden>
+<dialog id="dlg">
+  <h2 id="dlgTitle"></h2><p id="dlgMsg"></p>
+  <div class="row" id="dlgBtns"></div>
+</dialog>
+
+<script>
+const $ = id => document.getElementById(id);
+const ed = $('ed'), preview = $('preview');
+const hasFS = 'showOpenFilePicker' in window;
+let handle = null, name = 'Untitled.md', dirty = false, overwriteOK = false;
+
+/* ---------- Markdown → HTML ---------- */
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const safeUrl = u => /^\s*(javascript|vbscript|data:(?!image\/))/i.test(u) ? '#' : u;
+
+function inline(s){
+  const codes = [];
+  s = s.replace(/(`+)([\s\S]*?[^`])\1(?!`)/g, (_, __, c) => (codes.push(c.trim()), '\u0000' + (codes.length-1) + '\u0000'));
+  s = esc(s);
+  s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+&quot;(.*?)&quot;)?\)/g, (_, a, u, t) => `<img src="${safeUrl(u)}" alt="${a}"${t?` title="${t}"`:''}>`);
+  s = s.replace(/\[([^\]]+)\]\(([^)\s]+)(?:\s+&quot;(.*?)&quot;)?\)/g, (_, a, u, t) => `<a href="${safeUrl(u)}" target="_blank" rel="noopener"${t?` title="${t}"`:''}>${a}</a>`);
+  s = s.replace(/(^|[\s(])(https?:\/\/[^\s<)]+)/g, '$1<a href="$2" target="_blank" rel="noopener">$2</a>');
+  s = s.replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>')
+       .replace(/(\*\*|__)(.+?)\1/g,'<strong>$2</strong>')
+       .replace(/\*(?!\s)(.+?)\*/g,'<em>$1</em>')
+       .replace(/(^|\W)_(?!\s)(.+?)_(?=\W|$)/g,'$1<em>$2</em>')
+       .replace(/~~(.+?)~~/g,'<del>$1</del>')
+       .replace(/ {2,}\n/g,'<br>\n');
+  return s.replace(/\u0000(\d+)\u0000/g, (_, i) => `<code>${esc(codes[i])}</code>`);
+}
+
+const LIST = /^(\s*)([-*+]|\d+[.)])\s+(.*)/;
+const indentOf = l => l.match(/^\s*/)[0].replace(/\t/g,'    ').length;
+
+function renderList(lines){
+  const base = indentOf(lines[0]), ordered = /\d/.test(lines[0].trim()[0]);
+  const items = [];
+  for (const l of lines){
+    const m = l.match(LIST);
+    if (m && indentOf(l) <= base) items.push({text: m[3], sub: []});
+    else items[items.length-1].sub.push(l);
+  }
+  const li = it => {
+    let t = it.text, box = '';
+    const task = t.match(/^\[([ xX])\]\s+(.*)/);
+    if (task){ box = `<input type="checkbox" disabled${task[1]!==' '?' checked':''}>`; t = task[2]; }
+    const nested = it.sub.filter(x => LIST.test(x) || /^\s+\S/.test(x));
+    const rest = nested.length && LIST.test(nested[0]) ? '\n' + renderList(nested) : (nested.length ? ' ' + inline(nested.map(x=>x.trim()).join(' ')) : '');
+    return `<li>${box}${inline(t)}${rest}</li>`;
+  };
+  const tag = ordered ? 'ol' : 'ul';
+  return `<${tag}>${items.map(li).join('')}</${tag}>`;
+}
+
+const cells = r => r.trim().replace(/^\||\|$/g,'').split('|').map(c => c.trim());
+const TSEP = /^\s*\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)*\|?\s*$/;
+const startsBlock = l => /^(```|#{1,6}\s|>|\s*([-*_])(\s*\2){2,}\s*$)/.test(l) || LIST.test(l);
+
+function parse(src){
+  const L = src.replace(/\r/g,'').split('\n'); let i = 0; const out = [];
+  while (i < L.length){
+    const l = L[i]; let m;
+    if (!l.trim()){ i++; continue; }
+    if (/^```/.test(l)){
+      const buf = []; i++;
+      while (i < L.length && !/^```/.test(L[i])) buf.push(L[i++]);
+      i++; out.push(`<pre><code>${esc(buf.join('\n'))}</code></pre>`); continue;
+    }
+    if (m = l.match(/^(#{1,6})\s+(.*?)\s*#*\s*$/)){ out.push(`<h${m[1].length}>${inline(m[2])}</h${m[1].length}>`); i++; continue; }
+    if (/^\s*([-*_])(\s*\1){2,}\s*$/.test(l)){ out.push('<hr>'); i++; continue; }
+    if (/^>/.test(l)){
+      const buf = [];
+      while (i < L.length && /^>/.test(L[i])) buf.push(L[i++].replace(/^>\s?/,''));
+      out.push(`<blockquote>${parse(buf.join('\n'))}</blockquote>`); continue;
+    }
+    if (LIST.test(l)){
+      const buf = [];
+      while (i < L.length && L[i].trim() && (LIST.test(L[i]) || /^\s+\S/.test(L[i]))) buf.push(L[i++]);
+      out.push(renderList(buf)); continue;
+    }
+    if (l.includes('|') && i+1 < L.length && TSEP.test(L[i+1]) && L[i+1].includes('-')){
+      const head = cells(l); i += 2; const rows = [];
+      while (i < L.length && L[i].includes('|') && L[i].trim()) rows.push(cells(L[i++]));
+      out.push(`<table><thead><tr>${head.map(c=>`<th>${inline(c)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${inline(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>`); continue;
+    }
+    const buf = [l]; i++;
+    while (i < L.length && L[i].trim() && !startsBlock(L[i])) buf.push(L[i++]);
+    out.push(`<p>${inline(buf.join('\n'))}</p>`);
+  }
+  return out.join('\n');
+}
+
+/* ---------- UI state ---------- */
+let raf = 0;
+function render(){
+  cancelAnimationFrame(raf);
+  raf = requestAnimationFrame(() => {
+    preview.innerHTML = parse(ed.value);
+    const t = ed.value.trim();
+    $('count').textContent = (t ? t.split(/\s+/).length : 0) + ' words · ' + ed.value.length + ' characters';
+  });
+}
+function setName(n){ name = n; $('fname').textContent = n; document.title = n + ' – Markdown Editor'; }
+function setDirty(d){ dirty = d; document.body.classList.toggle('dirty', d); }
+function status(msg){ $('status').textContent = msg; }
+
+ed.addEventListener('input', () => { setDirty(true); render(); });
+ed.addEventListener('keydown', e => {
+  if (e.key === 'Tab'){
+    e.preventDefault();
+    const s = ed.selectionStart;
+    ed.setRangeText('  ', s, ed.selectionEnd, 'end');
+    ed.dispatchEvent(new Event('input'));
+  }
+});
+window.addEventListener('beforeunload', e => { if (dirty){ e.preventDefault(); e.returnValue = ''; } });
+
+/* ---------- Dialog helper ---------- */
+function ask(title, msg, buttons){
+  return new Promise(res => {
+    const d = $('dlg'); $('dlgTitle').textContent = title; $('dlgMsg').textContent = msg;
+    const row = $('dlgBtns'); row.innerHTML = '';
+    buttons.forEach(([label, val, primary]) => {
+      const b = document.createElement('button'); b.textContent = label;
+      if (primary) b.className = 'primary';
+      b.onclick = () => { d.close(); res(val); };
+      row.appendChild(b);
+    });
+    d.oncancel = () => res(null);
+    d.showModal();
+  });
+}
+async function confirmDiscard(){
+  if (!dirty) return true;
+  return (await ask('Discard unsaved changes?', 'The current document has changes that haven’t been saved.',
+    [['Cancel', false], ['Discard changes', true, true]])) === true;
+}
+
+/* ---------- Open ---------- */
+async function load(file, h){
+  if (!(await confirmDiscard())) return;
+  ed.value = await file.text();
+  handle = h || null; overwriteOK = false;
+  setName(file.name); setDirty(false); render();
+  status(handle ? 'Opened ' + file.name + '. Save will offer to overwrite it.' : 'Opened ' + file.name + '. Save will download a copy' + (hasFS ? '.' : ' (this browser can’t overwrite files).'));
+}
+$('open').onclick = async () => {
+  if (hasFS){
+    try {
+      const [h] = await showOpenFilePicker({types:[{description:'Markdown', accept:{'text/markdown':['.md','.markdown'],'text/plain':['.txt']}}]});
+      await load(await h.getFile(), h);
+    } catch (e) { if (e.name !== 'AbortError') status('Couldn’t open the file: ' + e.message); }
+  } else $('picker').click();
+};
+$('picker').onchange = async e => { const f = e.target.files[0]; if (f) await load(f, null); e.target.value = ''; };
+
+/* ---------- Drag and drop ---------- */
+let depth = 0;
+addEventListener('dragenter', e => { if (e.dataTransfer?.types.includes('Files')){ depth++; document.body.classList.add('dragging'); } });
+addEventListener('dragleave', () => { if (--depth <= 0){ depth = 0; document.body.classList.remove('dragging'); } });
+addEventListener('dragover', e => e.preventDefault());
+addEventListener('drop', async e => {
+  e.preventDefault(); depth = 0; document.body.classList.remove('dragging');
+  const item = e.dataTransfer.items?.[0], file = e.dataTransfer.files[0];
+  if (!file) return;
+  let h = null;
+  try { if (item?.getAsFileSystemHandle){ const x = await item.getAsFileSystemHandle(); if (x?.kind === 'file') h = x; } } catch {}
+  await load(h ? await h.getFile() : file, h);
+});
+
+/* ---------- Save ---------- */
+function download(){
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([ed.value], {type:'text/markdown'}));
+  a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  setDirty(false); status('Downloaded ' + name + '.');
+}
+async function write(h){
+  const w = await h.createWritable(); await w.write(ed.value); await w.close();
+  setDirty(false); status('Saved ' + h.name + ' at ' + new Date().toLocaleTimeString() + '.');
+}
+async function saveAs(){
+  if (!hasFS) return download();
+  try {
+    const h = await showSaveFilePicker({suggestedName: name, types:[{description:'Markdown', accept:{'text/markdown':['.md']}}]});
+    await write(h); handle = h; overwriteOK = true; setName(h.name);
+  } catch (e) { if (e.name !== 'AbortError') status('Couldn’t save: ' + e.message); }
+}
+async function save(){
+  if (!handle) return saveAs();
+  if (!overwriteOK){
+    const c = await ask('Save over ' + handle.name + '?', 'This will replace the contents of the file you opened.',
+      [['Cancel', null], ['Save as new file…', 'new'], ['Save over ' + handle.name, 'over', true]]);
+    if (c === 'new') return saveAs();
+    if (c !== 'over') return;
+    overwriteOK = true;
+  }
+  try { await write(handle); }
+  catch (e) { overwriteOK = false; status('Couldn’t save to the original file (' + e.message + '). Try Save as…'); }
+}
+$('save').onclick = save; $('saveas').onclick = saveAs;
+addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's'){ e.preventDefault(); e.shiftKey ? saveAs() : save(); }
+});
+
+/* ---------- Starter content ---------- */
+ed.value = `# Welcome
+
+Type here and the preview updates as you go. **Open…** a file or drop one anywhere on the page.
+
+## Supported
+
+- Headings, **bold**, *italic*, ~~strikethrough~~ and \`inline code\`
+- [Links](https://example.com) and images
+  - Nested lists
+- [x] Task lists
+
+1. Numbered lists
+2. Block quotes, tables, and code fences
+
+> Press Ctrl/Cmd+S to save.
+
+| Feature | Status |
+|---------|--------|
+| Live preview | Yes |
+| Overwrite opened file | Chrome, Edge |
+
+\`\`\`js
+console.log("hello");
+\`\`\`
+`;
+render();
+</script>
+</body>
+</html>
